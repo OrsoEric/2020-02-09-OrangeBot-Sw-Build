@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+	<head>
+		<title>OrangeBot</title>
+		<style>
+		/* @author Orso Eric */
+		*
+		{
+			box-sizing: border-box;
+		}
+
+		body
+		{
+			background-color: #D0D0D0;
+		}
+		h1
+		{
+			color: blue;
+		}
+		p
+		{
+			color: red;
+		}
+
+		/* Create two equal columns that floats next to each other */
+		.column
+		{
+			float: left;
+			width: 50%;
+			/*padding: 10px;*/
+		}
+
+		/* Clear floats after the columns */
+		.row:after
+		{
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.tooltip
+		{
+			position: relative;
+			display: inline-block;
+			border-bottom: 1px dotted black;
+			/*font-size: 10px;*/
+		}
+
+		.tooltip .tooltiptext
+		{
+			visibility: hidden;
+			width: 200%;
+			background-color: #777;
+			color: #fff;
+			text-align: left;
+			border-radius: 6px;
+			padding: 5px 5px;
+			position: absolute;
+			z-index: 1;
+			bottom: 125%;
+			left: 50%;
+			margin-left: 5px;
+			opacity: 20%;
+			transition: opacity 0.3s;
+		}
+		/* Tooltip arrow */
+		.tooltip .tooltiptext::after
+		{
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 5%;
+			margin-left: -5px;
+			border-width: 5px;
+			border-style: solid;
+			border-color: #555 transparent transparent transparent;
+		}
+
+		.tooltip:hover .tooltiptext
+		{
+			visibility: visible;
+			opacity: 1;
+		}
+		</style>
+		<script type="text/javascript" src="orangebot_key.js"></script>
+		<script type="text/javascript">
+			//-----------------------------------------
+			//	VARS
+			//-----------------------------------------
+			
+			//Direction described by the keys
+			var direction = { forward : 0, right : 0};
+			
+			//-----------------------------------------
+			//	CLIENT->SERVER CONTROLS
+			//-----------------------------------------
+			//	Controls inside the webpage can emit async events to the server
+			//	In this example I have a push button and I catch keyboard strokes
+
+			//Handler for a pushbutton
+			function button_handler()
+			{
+				console.log("Button was clicked...");
+			}
+
+			//Listen for key strokes
+			window.document.addEventListener
+			(
+				"keydown",
+				function onEvent(event)
+				{
+					//Process key event and get current direction
+					f_change = process_key( event.key, 1 );
+					//If: direction has changed
+					if (f_change == true)
+					{
+						direction = get_direction();
+						console.log("keydown: " +event.key, direction);
+					}			
+				},
+				false
+			);
+
+			//Listen for key releases
+			window.document.addEventListener
+			(
+				"keyup",
+				function onEvent(event)
+				{
+					f_change = process_key( event.key, 0 );
+					//If: direction has changed
+					if (f_change == true)
+					{
+						direction = get_direction();
+						console.log("keydown: " +event.key, direction);
+					}	
+				},
+				false
+			);
+
+		</script>
+	</head>
+	<body>
+		<h1>Test Bench for Keystroke detector</h1>
+		<p>Button</p>
+		<button id="my_button" type="button" onclick="button_handler()">Button!</button>
+	</body>
+</html>
